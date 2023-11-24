@@ -23,7 +23,7 @@ for creating AZURE resources, and you can customize the inputs as needed. Below 
 ```hcl
 module "mssql-server" {
   depends_on = [module.subnet]
-  source     = "git::https://github.com/opz0/terraform-azure-mssql-db.git?ref=v1.0.0"
+  source     = "git::https://github.com/cypik/terraform-azure-mssql-db.git?ref=v1.0.0"
 
   sqlserver_name = "testmssql1"
   database_name  = "demomssqldb"
@@ -66,10 +66,10 @@ This module provides the following outputs:
 - 'primary_sql_server_fqdn': The fully qualified domain name of the Azure SQL Server.
 - 'sql_database_id': The SQL Database ID.
 # Examples
-For detailed examples on how to use this module, please refer to the 'examples' directory within this repository.
+For detailed examples on how to use this module, please refer to the '[example](https://github.com/cypik/terraform-azure-mssql-db/blob/master/example)' directory within this repository.
 
 # License
-This Terraform module is provided under the '[License Name]' License. Please see the [LICENSE](https://github.com/opz0/terraform-azure-mssql-db/blob/readme/LICENSE) file for more details.
+This Terraform module is provided under the '[License Name]' License. Please see the [LICENSE](https://github.com/cypik/terraform-azure-mssql-db/blob/master/LICENSE) file for more details.
 
 # Author
 Your Name
