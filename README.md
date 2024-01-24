@@ -1,16 +1,15 @@
-# terraform-azure-mssql-db
-# Terraform Azure Infrastructure
+# Terraform-azure-mssql-db
 
-This Terraform configuration defines an Azure infrastructure using the Azure provider.
+# Terraform Azure Cloud Mssql-Db Module
 
 ## Table of Contents
-
 - [Introduction](#introduction)
 - [Usage](#usage)
-- [Module Inputs](#module-inputs)
-- [Module Outputs](#module-outputs)
 - [Examples](#examples)
+- [Author](#author)
 - [License](#license)
+- [Inputs](#inputs)
+- [Outputs](#outputs)
 
 ## Introduction
 This repository contains Terraform code to deploy resources on Microsoft Azure, including a resource group and a mssql database.
@@ -23,8 +22,8 @@ for creating AZURE resources, and you can customize the inputs as needed. Below 
 ```hcl
 module "mssql-server" {
   depends_on = [module.subnet]
-  source     = "git::https://github.com/cypik/terraform-azure-mssql-db.git?ref=v1.0.0"
-
+  source     = "cypik/mssql-db/azure"
+  version    = "1.0.1"
   sqlserver_name = "testmssql1"
   database_name  = "demomssqldb"
 
@@ -44,33 +43,84 @@ module "mssql-server" {
 ```
 This example demonstrates how to create various AZURE resources using the provided modules. Adjust the input values to suit your specific requirements.
 
-## Module Inputs
-The following input variables can be configured:
-
-- 'name': The name of the Microsoft SQL Server.
-- 'environment': The environment or purpose of the resources.
-- 'location':  Specifies the supported Azure location where the resource exists.
-- 'resource_group_name': The name of the resource group in which to create the Microsoft SQL Server.
-- 'virtual_network_id':  The ID of the Virtual Network that should be linked to the DNS Zone.
-- 'subnet_id': TThe ID of the Subnet from which Private IP Addresses will be allocated for this Private Endpoint.
-- 'admin_username': The administrator login name for the new server.
-- 'admin_password': The password associated with the administrator_login user.
-- 'sql_database_edition': The edition of the database to be created.
-- 'sqldb_service_objective_name': The service objective name for the database.
-- 'sql_server_version': The version for the new server.
-
-## Module Outputs
-This module provides the following outputs:
-
-- 'primary_sql_server_id': The Microsoft SQL Server ID.
-- 'primary_sql_server_fqdn': The fully qualified domain name of the Azure SQL Server.
-- 'sql_database_id': The SQL Database ID.
 # Examples
-For detailed examples on how to use this module, please refer to the '[example](https://github.com/cypik/terraform-azure-mssql-db/blob/master/example)' directory within this repository.
+For detailed examples on how to use this module, please refer to the [example](https://github.com/cypik/terraform-azure-mssql-db/blob/master/example) directory within this repository.
 
 # License
-This Terraform module is provided under the '[License Name]' License. Please see the [LICENSE](https://github.com/cypik/terraform-azure-mssql-db/blob/master/LICENSE) file for more details.
+This Terraform module is provided under the **MIT** License. Please see the [LICENSE](https://github.com/cypik/terraform-azure-mssql-db/blob/master/LICENSE) file for more details.
 
 # Author
 Your Name
-Replace '[License Name]' and '[Your Name]' with the appropriate license and your information. Feel free to expand this README with additional details or usage instructions as needed for your specific use case.
+Replace **MIT** and **Cypik** with the appropriate license and your information. Feel free to expand this README with additional details or usage instructions as needed for your specific use case.
+<!-- BEGIN_TF_DOCS -->
+## Requirements
+
+| Name | Version |
+|------|---------|
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.6.6 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >=3.87.0 |
+
+## Providers
+
+| Name | Version |
+|------|---------|
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | >=3.87.0 |
+
+## Modules
+
+| Name | Source | Version |
+|------|--------|---------|
+| <a name="module_labels"></a> [labels](#module\_labels) | cypik/labels/azure | 1.0.1 |
+
+## Resources
+
+| Name | Type |
+|------|------|
+| [azurerm_private_dns_a_record.arecord](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_a_record) | resource |
+| [azurerm_private_dns_zone.dnszone](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_zone) | resource |
+| [azurerm_private_dns_zone_virtual_network_link.vent-link](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_zone_virtual_network_link) | resource |
+| [azurerm_private_endpoint.pep](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
+| [azurerm_sql_database.db](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/sql_database) | resource |
+| [azurerm_sql_server.sql_server](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/sql_server) | resource |
+| [azurerm_private_endpoint_connection.pep_connection](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/private_endpoint_connection) | data source |
+
+## Inputs
+
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_admin_password"></a> [admin\_password](#input\_admin\_password) | The password associated with the admin\_username user | `string` | `null` | no |
+| <a name="input_admin_username"></a> [admin\_username](#input\_admin\_username) | The administrator login name for the new SQL Server | `string` | `null` | no |
+| <a name="input_database_name"></a> [database\_name](#input\_database\_name) | The name of the database | `string` | `""` | no |
+| <a name="input_enable_private_endpoint"></a> [enable\_private\_endpoint](#input\_enable\_private\_endpoint) | Manages a Private Endpoint to SQL database | `bool` | `true` | no |
+| <a name="input_environment"></a> [environment](#input\_environment) | Environment (e.g. `prod`, `dev`, `staging`). | `string` | `""` | no |
+| <a name="input_existing_private_dns_zone"></a> [existing\_private\_dns\_zone](#input\_existing\_private\_dns\_zone) | Name of the existing private DNS zone | `string` | `null` | no |
+| <a name="input_identity"></a> [identity](#input\_identity) | If you want your SQL Server to have an managed identity. Defaults to false. | `bool` | `false` | no |
+| <a name="input_label_order"></a> [label\_order](#input\_label\_order) | Label order, e.g. `name`,`application`. | `list(any)` | <pre>[<br>  "name",<br>  "environment"<br>]</pre> | no |
+| <a name="input_location"></a> [location](#input\_location) | The location/region to keep all your network resources. To get the list of all locations with table format from azure cli, run 'az account list-locations -o table' | `string` | `""` | no |
+| <a name="input_managedby"></a> [managedby](#input\_managedby) | ManagedBy, eg 'cypik'. | `string` | `"Cypik"` | no |
+| <a name="input_name"></a> [name](#input\_name) | Name  (e.g. `app` or `mssql`). | `string` | `""` | no |
+| <a name="input_repository"></a> [repository](#input\_repository) | Terraform current module repo | `string` | `"https://github.com/cypik/terraform-azure-mssql-db"` | no |
+| <a name="input_resource_group_name"></a> [resource\_group\_name](#input\_resource\_group\_name) | A container that holds related resources for an Azure solution | `string` | `""` | no |
+| <a name="input_sql_database_edition"></a> [sql\_database\_edition](#input\_sql\_database\_edition) | The edition of the database to be created | `string` | `"Standard"` | no |
+| <a name="input_sql_server_version"></a> [sql\_server\_version](#input\_sql\_server\_version) | The version for the new server. Valid values are: 2.0 (for v11 server) and 12.0 (for v12 server) | `string` | `null` | no |
+| <a name="input_sqldb_service_objective_name"></a> [sqldb\_service\_objective\_name](#input\_sqldb\_service\_objective\_name) | The service objective name for the database | `string` | `"S1"` | no |
+| <a name="input_sqlserver_name"></a> [sqlserver\_name](#input\_sqlserver\_name) | SQL server Name | `string` | `""` | no |
+| <a name="input_subnet_id"></a> [subnet\_id](#input\_subnet\_id) | The resource id of existing subnet | `string` | `null` | no |
+| <a name="input_tags"></a> [tags](#input\_tags) | A map of tags to add to all resources | `map(string)` | `{}` | no |
+| <a name="input_threat_detection_policy"></a> [threat\_detection\_policy](#input\_threat\_detection\_policy) | n/a | `string` | `"Disabled"` | no |
+| <a name="input_virtual_network_id"></a> [virtual\_network\_id](#input\_virtual\_network\_id) | The resoruce id of existing Virtual network | `string` | `null` | no |
+
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| <a name="output_sql_database_id"></a> [sql\_database\_id](#output\_sql\_database\_id) | The SQL Database ID |
+| <a name="output_sql_database_name"></a> [sql\_database\_name](#output\_sql\_database\_name) | The SQL Database Name |
+| <a name="output_sql_server_admin_password"></a> [sql\_server\_admin\_password](#output\_sql\_server\_admin\_password) | SQL database administrator login password |
+| <a name="output_sql_server_admin_user"></a> [sql\_server\_admin\_user](#output\_sql\_server\_admin\_user) | SQL database administrator login id |
+| <a name="output_sql_server_fqdn"></a> [sql\_server\_fqdn](#output\_sql\_server\_fqdn) | The fully qualified domain name of the primary Azure SQL Server |
+| <a name="output_sql_server_id"></a> [sql\_server\_id](#output\_sql\_server\_id) | The primary Microsoft SQL Server ID |
+| <a name="output_sql_server_private_dns_zone_domain"></a> [sql\_server\_private\_dns\_zone\_domain](#output\_sql\_server\_private\_dns\_zone\_domain) | DNS zone name of SQL server Private endpoints dns name records |
+| <a name="output_sql_server_private_endpoint"></a> [sql\_server\_private\_endpoint](#output\_sql\_server\_private\_endpoint) | id of the Primary SQL server Private Endpoint |
+| <a name="output_sql_server_private_endpoint_fqdn"></a> [sql\_server\_private\_endpoint\_fqdn](#output\_sql\_server\_private\_endpoint\_fqdn) | Priamary SQL server private endpoint IPv4 Addresses |
+<!-- END_TF_DOCS -->
